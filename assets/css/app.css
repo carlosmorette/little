@@ -88,8 +88,28 @@
   cursor: pointer;
 }
 
+/* My css */
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
 .square {
   width: 100px;
   height: 100px;
   border: 2px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fill {
+  background-color: rgba(10, 100, 240, 0.4);
+}
+
+.square:hover {
+  background-color: rgba(0, 0, 0, 0.2);
 }
