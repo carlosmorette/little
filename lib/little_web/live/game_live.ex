@@ -42,11 +42,11 @@ defmodule LittleWeb.GameLive do
 
   def handle_event("move", %{"key" => "ArrowDown"}, socket) do
     {:noreply, update(socket, :y, fn y -> y + 2 end)}
-  end 
+  end
 
   def handle_event("move", %{"key" => "ArrowLeft"}, socket) do
     {:noreply, update(socket, :x, fn x -> x - 2 end)}
-  end 
+  end
 
   def handle_event("move", %{"key" => "ArrowRight"}, socket) do
     {:noreply, update(socket, :x, fn x -> x + 2 end)}

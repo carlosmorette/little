@@ -110,6 +110,6 @@
   background-color: rgba(10, 100, 240, 0.4);
 }
 
-.square:hover {
+.fill:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
