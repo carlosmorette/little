@@ -1,5 +1,7 @@
 # Little
 
+![](./images/15-puzzle.png)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
