@@ -1,6 +1,6 @@
 # Little
 
-![](./images/15-puzzle.png)
+![](./assets/demonstration.gif)
 
 To start your Phoenix server:
 
