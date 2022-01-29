@@ -81,7 +81,7 @@ defmodule LittleWeb.GameLive do
       new_chunk_board = make_exchange(socket.assigns.chunk_board, int_number)
       new_space_neighbor = space_neighbors(new_chunk_board)
 
-      socket = 
+      socket =
         if List.flatten(new_chunk_board) == @completed_board do
           update(socket, :finished, fn _ -> true end)
         else

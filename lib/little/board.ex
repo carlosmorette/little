@@ -1,10 +1,14 @@
 defmodule Little.Board do
   require Integer
 
-  @blank_space 0
+  @blank 0
   @chunk_size 4
-  @last_position_in_chunk 3
+
   @first_position_in_chunk 0
+  @last_position_in_chunk 3
+
+  @first_position_in_board 0
+  @last_position_in_board 3
 
   def generate_board_with_chunks() do
     0..15
@@ -51,7 +55,7 @@ defmodule Little.Board do
     |> Enum.reverse()
     |> Enum.with_index()
     |> Enum.map(fn {c, index} -> {c, index + 1} end)
-    |> Enum.filter(&Enum.member?(elem(&1, 0), @blank_space))
+    |> Enum.filter(&Enum.member?(elem(&1, 0), @blank))
     |> List.first()
     |> elem(1)
   end
@@ -63,12 +67,12 @@ defmodule Little.Board do
   end
 
   def find_indexs(board, neighbor) do
-    {Enum.find_index(board, &(&1 == neighbor)), Enum.find_index(board, &(&1 == @blank_space))}
+    {Enum.find_index(board, &(&1 == neighbor)), Enum.find_index(board, &(&1 == @blank))}
   end
 
   def change_parts(board, neighbor, neighbor_index, blank_index) do
     board
-    |> List.replace_at(neighbor_index, @blank_space)
+    |> List.replace_at(neighbor_index, @blank)
     |> List.replace_at(blank_index, neighbor)
     |> Enum.chunk_every(@chunk_size)
   end
@@ -86,16 +90,16 @@ defmodule Little.Board do
     |> Enum.filter(fn {chunk, _index} -> Enum.member?(chunk, 0) end)
     |> List.first()
     |> then(fn {chunk, index} ->
-      {chunk, index, Enum.find_index(chunk, &(&1 == @blank_space))}
+      {chunk, index, Enum.find_index(chunk, &(&1 == @blank))}
     end)
   end
 
   def capture_moving_parts_in_own_chunk({chunk, index, blank_index}) do
     cond do
-      List.first(chunk) == @blank_space ->
+      blank_index == @first_position_in_chunk ->
         [Enum.at(chunk, blank_index + 1)]
 
-      List.last(chunk) == @blank_space ->
+      blank_index == @last_position_in_chunk ->
         [Enum.at(chunk, blank_index - 1)]
 
       true ->
@@ -104,18 +108,18 @@ defmodule Little.Board do
     |> then(fn parts -> {parts, index, blank_index} end)
   end
 
-  def capture_other_moving_parts({space_neighbors, chunk_index, blank_index}, chunks) do
+  def capture_other_moving_parts({blank_neighbors, blank_chunk_index, blank_index}, chunks) do
     cond do
-      chunk_index == @first_position_in_chunk ->
-        [Enum.at(chunks, chunk_index + 1)]
+      blank_chunk_index == @first_position_in_board ->
+        [Enum.at(chunks, blank_chunk_index + 1)]
 
-      chunk_index == @last_position_in_chunk ->
-        [Enum.at(chunks, chunk_index - 1)]
+      blank_chunk_index == @last_position_in_board ->
+        [Enum.at(chunks, blank_chunk_index - 1)]
 
       true ->
-        [Enum.at(chunks, chunk_index + 1), Enum.at(chunks, chunk_index - 1)]
+        [Enum.at(chunks, blank_chunk_index + 1), Enum.at(chunks, blank_chunk_index - 1)]
     end
-    |> Enum.reduce(space_neighbors, fn neighboring_chunk, acc ->
+    |> Enum.reduce(blank_neighbors, fn neighboring_chunk, acc ->
       [Enum.at(neighboring_chunk, blank_index) | acc]
     end)
   end
