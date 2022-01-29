@@ -18,7 +18,6 @@ defmodule LittleWeb.Router do
     pipe_through :browser
 
     live "/", GameLive
-    live "/board", BoardLive
   end
 
   # Other scopes may use custom stacks.

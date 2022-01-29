@@ -107,9 +107,25 @@
 }
 
 .fill {
-  background-color: rgba(10, 100, 240, 0.4);
+  background-color: #1D7874;
+  color: white;
 }
 
 .fill:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #13293D;
+}
+
+.game-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-content {
+  display: flex;
+  height: 70%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
 }
