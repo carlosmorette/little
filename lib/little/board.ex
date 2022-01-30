@@ -94,33 +94,42 @@ defmodule Little.Board do
     end)
   end
 
+  def capture_moving_parts_in_own_chunk({chunk, index, @first_position_in_chunk = blank_index}) do
+    {[Enum.at(chunk, blank_index + 1)], index, blank_index}
+  end
+
+  def capture_moving_parts_in_own_chunk({chunk, index, @last_position_in_chunk = blank_index}) do
+    {[Enum.at(chunk, blank_index - 1)], index, blank_index}
+  end
+
   def capture_moving_parts_in_own_chunk({chunk, index, blank_index}) do
-    cond do
-      blank_index == @first_position_in_chunk ->
-        [Enum.at(chunk, blank_index + 1)]
+    parts = [Enum.at(chunk, blank_index - 1), Enum.at(chunk, blank_index + 1)]
+    {parts, index, blank_index}
+  end
 
-      blank_index == @last_position_in_chunk ->
-        [Enum.at(chunk, blank_index - 1)]
+  def capture_other_moving_parts(
+        {blank_neighbors, @first_position_in_board = blank_chunk_index, blank_index},
+        chunks
+      ) do
+    neighboring_chunk = Enum.at(chunks, blank_chunk_index + 1)
+    neighbor_piece = Enum.at(neighboring_chunk, blank_index)
+    [neighbor_piece | blank_neighbors]
+  end
 
-      true ->
-        [Enum.at(chunk, blank_index - 1), Enum.at(chunk, blank_index + 1)]
-    end
-    |> then(fn parts -> {parts, index, blank_index} end)
+  def capture_other_moving_parts(
+        {blank_neighbors, @last_position_in_board = blank_chunk_index, blank_index},
+        chunks
+      ) do
+    neighboring_chunk = Enum.at(chunks, blank_chunk_index - 1)
+    neighbor_piece = Enum.at(neighboring_chunk, blank_index)
+    [neighbor_piece | blank_neighbors]
   end
 
   def capture_other_moving_parts({blank_neighbors, blank_chunk_index, blank_index}, chunks) do
-    cond do
-      blank_chunk_index == @first_position_in_board ->
-        [Enum.at(chunks, blank_chunk_index + 1)]
-
-      blank_chunk_index == @last_position_in_board ->
-        [Enum.at(chunks, blank_chunk_index - 1)]
-
-      true ->
-        [Enum.at(chunks, blank_chunk_index + 1), Enum.at(chunks, blank_chunk_index - 1)]
-    end
+    [Enum.at(chunks, blank_chunk_index + 1), Enum.at(chunks, blank_chunk_index - 1)]
     |> Enum.reduce(blank_neighbors, fn neighboring_chunk, acc ->
-      [Enum.at(neighboring_chunk, blank_index) | acc]
+      neighbor_piece = Enum.at(neighboring_chunk, blank_index)
+      [neighbor_piece | acc]
     end)
   end
 end
