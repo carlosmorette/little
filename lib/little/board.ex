@@ -111,8 +111,11 @@ defmodule Little.Board do
         {blank_neighbors, @first_position_in_board = blank_chunk_index, blank_index},
         chunks
       ) do
-    neighboring_chunk = Enum.at(chunks, blank_chunk_index + 1)
-    neighbor_piece = Enum.at(neighboring_chunk, blank_index)
+    neighbor_piece =
+      chunks
+      |> Enum.at(blank_chunk_index + 1)
+      |> Enum.at(blank_index)
+
     [neighbor_piece | blank_neighbors]
   end
 
@@ -120,8 +123,11 @@ defmodule Little.Board do
         {blank_neighbors, @last_position_in_board = blank_chunk_index, blank_index},
         chunks
       ) do
-    neighboring_chunk = Enum.at(chunks, blank_chunk_index - 1)
-    neighbor_piece = Enum.at(neighboring_chunk, blank_index)
+    neighbor_piece =
+      chunks
+      |> Enum.at(blank_chunk_index - 1)
+      |> Enum.at(blank_index)
+
     [neighbor_piece | blank_neighbors]
   end
 
